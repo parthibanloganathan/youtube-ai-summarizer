@@ -43,5 +43,4 @@ urllib3==1.26.14
 websockets==10.4
 Werkzeug==2.2.3
 yarl==1.8.2
-youtube-dl==2021.12.17
-yt-dlp==2023.3.4
+pytube==12.1.2
