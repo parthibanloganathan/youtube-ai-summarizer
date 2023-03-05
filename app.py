@@ -3,7 +3,7 @@ import youtube_dl
 
 app = Flask(__name__)
 
-@app.route('/extract', methods=['POST'])
+@app.route('/summarize', methods=['POST'])
 def extract():
     url = request.form['url']
     ydl_opts = {
@@ -14,6 +14,7 @@ def extract():
             'preferredquality': '192',
         }],
     }
+    
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         info_dict = ydl.extract_info(url, download=False)
         audio_url = info_dict.get("url", None)
@@ -24,3 +25,5 @@ def extract():
             response.headers['X-Accel-Redirect'] = audio_url
             return response
     return "Error: Could not extract audio from the video."
+
+@app.route('/summarize', methods=['POST'])
