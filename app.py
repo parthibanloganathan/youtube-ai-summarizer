@@ -14,7 +14,7 @@ def extract():
             'preferredquality': '192',
         }],
     }
-    
+
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         info_dict = ydl.extract_info(url, download=False)
         audio_url = info_dict.get("url", None)
@@ -26,4 +26,9 @@ def extract():
             return response
     return "Error: Could not extract audio from the video."
 
-@app.route('/summarize', methods=['POST'])
+@app.get("/")
+def home():
+    return "Flask is running"
+
+if __name__ == "__main__":
+    app.run(debug=True)

@@ -1,4 +1,5 @@
 import openai
+import os
 
 def get_transcript(audio):
     audio_file= open("/path/to/file/audio.mp3", "rb")
