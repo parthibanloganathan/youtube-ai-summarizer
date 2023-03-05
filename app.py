@@ -1,31 +1,32 @@
 from flask import Flask, request, Response
-import youtube_dl
+from pytube import YouTube
+from controllers.summarizer import summarize_transcript
 
 app = Flask(__name__)
 
 @app.route('/summarize', methods=['POST'])
 def extract():
-    url = request.form['url']
-    ydl_opts = {
-        'format': 'bestaudio/best',
-        'postprocessors': [{
-            'key': 'FFmpegExtractAudio',
-            'preferredcodec': 'mp3',
-            'preferredquality': '192',
-        }],
-    }
+    print("/summarize")
+    url = request.args.get("url")
+    print(url)
+    # options = {
+    #     'format': 'bestaudio',
+    #     'postprocessors': [{
+    #         'key': 'FFmpegExtractAudio',
+    #         'preferredcodec': 'mp3'
+    #     }],
+    # }
 
-    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-        info_dict = ydl.extract_info(url, download=False)
-        audio_url = info_dict.get("url", None)
-        if audio_url:
-            response = Response()
-            response.headers['Content-Type'] = 'audio/mp4'
-            response.headers['Content-Disposition'] = 'attachment; filename=audio.mp4'
-            response.headers['X-Accel-Redirect'] = audio_url
-            return response
-    return "Error: Could not extract audio from the video."
+    # audio_downloader = YoutubeDL(options)
+    # audio_downloader.extract_info(url, download=False)
+    # print(audio_downloader)
 
+    return 200
+
+@app.route('/sum', methods=['GET'])
+def sum():
+    return summarize_transcript()
+    
 @app.get("/")
 def home():
     return "Flask is running"
