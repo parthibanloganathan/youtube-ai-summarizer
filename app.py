@@ -1,6 +1,7 @@
 from flask import Flask, request, Response
 from pytube import YouTube
 from controllers.summarizer import summarize_transcript
+from controllers.whisper import download_audio, get_transcript_from_audio
 
 app = Flask(__name__)
 
@@ -9,19 +10,15 @@ def extract():
     print("/summarize")
     url = request.args.get("url")
     print(url)
-    # options = {
-    #     'format': 'bestaudio',
-    #     'postprocessors': [{
-    #         'key': 'FFmpegExtractAudio',
-    #         'preferredcodec': 'mp3'
-    #     }],
-    # }
+    # audio_filename = download_audio(url)
+    # transcript = get_transcript_from_audio(audio_filename)
+    # transcript = get_transcript_from_audio("audio.mp3")
 
-    # audio_downloader = YoutubeDL(options)
-    # audio_downloader.extract_info(url, download=False)
-    # print(audio_downloader)
+    with open("transcript.txt", "r") as f:
+        # Read the contents of the file into a string variable
+        transcript = f.read()
 
-    return 200
+    return summarize_transcript(transcript)
 
 @app.route('/sum', methods=['GET'])
 def sum():

@@ -9,14 +9,14 @@ from moviepy.editor import *
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-audio_file_path = "/Users/parthi/Downloads/lex_ai_aaron_smith_levin.mp3"
-audio_file= open(audio_file_path, "rb")
 
-audio = AudioSegment.from_mp3(audio_file_path)
+def get_transcript_from_audio(filename):
+    print("Chunking audio and getting transcript...")
+    final_transcript = ""
 
-final_transcript = ""
-
-def get_transcript_from_audio():
+    # audio_file_path = "/Users/parthi/Downloads/lex_ai_aaron_smith_levin.mp3"
+    audio = AudioSegment.from_mp3(filename)
+    
     # Chunk audio first
     CHUNK_LENGTH = 10 * 60 * 1000 # 10 mins
     total_segments = (len(audio) // CHUNK_LENGTH) + 1
@@ -38,8 +38,10 @@ def get_transcript_from_audio():
     
     return final_transcript
 
-def get_transcript(file):
-    transcript = openai.Audio.transcribe("whisper-1", file)
+def get_transcript(filename):
+    file = open(filename, "rb")
+    transcript = openai.Audio.transcribe("whisper-1", file).text
+    print(transcript)
     return transcript
 
 def download_audio(url='https://www.youtube.com/watch?v=eKhVnsZ2xY4'):
@@ -59,11 +61,13 @@ def download_audio(url='https://www.youtube.com/watch?v=eKhVnsZ2xY4'):
     audio.write_audiofile(audio_filename)
     print('--- END: Extracting Audio')
 
+    return audio_filename
+
 if __name__ == '__main__':
-    # get_transcript()
+    get_transcript()
     # yt = YouTube('https://www.youtube.com/watch?v=eKhVnsZ2xY4')
     # yt.captions['a.en'].download(title='test', srt=True)
-    download_audio()
-    get_transcript_from_audio()
+    # download_audio()
+    # get_transcript_from_audio(filename)
     
 
