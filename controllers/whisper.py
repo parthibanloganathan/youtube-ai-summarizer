@@ -5,6 +5,7 @@ import os
 from dotenv import load_dotenv
 from pathlib import Path
 load_dotenv(Path(".env"))
+from moviepy.editor import *
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -41,10 +42,28 @@ def get_transcript(file):
     transcript = openai.Audio.transcribe("whisper-1", file)
     return transcript
 
+def download_audio(url='https://www.youtube.com/watch?v=eKhVnsZ2xY4'):
+    yt = YouTube(url)
+    stream = yt.streams.get_by_itag(18)
+
+    print('--- START: Downloading Video')
+    video_filename = 'video.mp4'
+    stream.download(filename=video_filename)
+    print('--- END: Downloading Video')
+
+    print('--- START: Extracting Audio')
+    video_fileclip = VideoFileClip(video_filename)
+    audio = video_fileclip.audio
+
+    audio_filename = 'audio.mp3'
+    audio.write_audiofile(audio_filename)
+    print('--- END: Extracting Audio')
+
 if __name__ == '__main__':
     # get_transcript()
     # yt = YouTube('https://www.youtube.com/watch?v=eKhVnsZ2xY4')
     # yt.captions['a.en'].download(title='test', srt=True)
+    download_audio()
     get_transcript_from_audio()
     
 
