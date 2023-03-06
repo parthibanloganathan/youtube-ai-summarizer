@@ -6,9 +6,7 @@ load_dotenv(Path(".env"))
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-transcript = """ """ # insert transcript here
-
-def summarize_transcript():
+def summarize_transcript(transcript):
     prompt = "Here is the raw audio transcript from a podcast:\n" + transcript + "What are the key takeaways? Provide the outputs in markdown format using headings and bullet points."
     response = openai.ChatCompletion.create(
     model="gpt-3.5-turbo",
