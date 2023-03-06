@@ -46,3 +46,4 @@ yarl==1.8.2
 pytube==12.1.2
 moviepy==1.0.3
 pydub==0.25.1
+tiktoken
